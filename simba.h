@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <regex>
 
 using namespace std;
 
@@ -18,5 +19,8 @@ class Simba
     void setBoard(string input);
     void setPlayer(string input);
     void getBoard();
+    int checkMove(int col);
+    void play();
+    bool isWin(int col, string color);
 };
 #endif
