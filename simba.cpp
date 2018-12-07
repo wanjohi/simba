@@ -79,48 +79,52 @@ bool Simba::isWin(string test_board[80], int pos, string player) {
     for(int i=pos-far_left; i <= pos+far_right; i++) {
         test_string = test_string + test_board[i];
     }
+    //cout << test_string + "\n";
     if(regex_search(test_string,winner)) {
         return true;
     }
 
     // find how far up to go
-    for(int i=0; i<3 && pos - (i*10) >= 0; i++) far_up = i;
+    for(int i=0; i<4 && pos - (i*10) >= 0; i++) far_up = i;
     // find how far down to go
-    for(int i=0; i<3 && pos + (i*10) < 80; i++) far_down = i;
+    for(int i=0; i<4 && pos + (i*10) < 80; i++) far_down = i;
 
     //check vertical
     test_string = "";
-    for(int i=pos-(far_up*10); i < pos+(far_down*10); i=i+10) {
+    for(int i=pos-(far_up*10); i <= pos+(far_down*10); i=i+10) {
         test_string = test_string + test_board[i];
     }
+    //cout << test_string + "\n";
     if(regex_search(test_string,winner)) {
         return true;
     }
 
     // find how far diag up backward
-    for(int i=0; i<3 && (pos-(i*11))%10 <= pos%10 && pos-(i*11) > 0; i++) far_diag_ub = i;
+    for(int i=0; i<4 && (pos-(i*11))%10 <= pos%10 && pos-(i*11) > 0; i++) far_diag_ub = i;
     // find how far diag down forward
-    for(int i=0; i<3 && (pos+(i*11))%10 >= pos%10 && pos+(i*11) < 80; i++) far_diag_df = i;
+    for(int i=0; i<4 && (pos+(i*11))%10 >= pos%10 && pos+(i*11) < 80; i++) far_diag_df = i;
 
     //check diagonal foward
     test_string = "";
     for(int i=pos-(far_diag_ub*11); i <= pos+(far_diag_df*11); i=i+11) {
         test_string = test_string + test_board[i];
     }
+    //cout << test_string + "\n";
     if(regex_search(test_string,winner)) {
         return true;
     }
 
     // find how far diag up forward
-    for(int i=0; i<3 && (pos-(i*9))%10 >= pos%10 && pos-(i*11) > 0; i++) far_diag_uf = i;
+    for(int i=0; i<4 && (pos-(i*9))%10 >= pos%10 && pos-(i*9) > 0; i++) far_diag_uf = i;
     // find how far diag down backward
-    for(int i=0; i<3 && (pos+(i*9))%10 <= pos%10 && pos+(i*11) < 80; i++) far_diag_db = i;
+    for(int i=0; i<4 && (pos+(i*9))%10 <= pos%10 && pos+(i*9) < 80; i++) far_diag_db = i;
 
     //check diagonal foward
     test_string = "";
     for(int i=pos-(far_diag_uf*9); i <= pos+(far_diag_db*9); i=i+9) {
         test_string = test_string + test_board[i];
     }
+    //cout << test_string + "\n";
     if(regex_search(test_string,winner)) {
         return true;
     }

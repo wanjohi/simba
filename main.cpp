@@ -5,11 +5,12 @@ int main(int argc, char **argv) {
     Simba new_simba;
     new_simba.setBoard(argv[2]);
     new_simba.setPlayer(argv[1]);
+    //new_simba.isWin(new_simba.board,62,"r");
     
     int pos;
     int move_value = -1;
     int temp;
-    int depth = 5;
+    int depth = 3;
 
     string color_to_play;
     int col_to_play;
