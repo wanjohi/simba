@@ -34,9 +34,9 @@ string Simba::getPlayer() {
 }
 
 // Play move
-int Simba::checkMove(string test_board[80], int col) {
+int Simba::checkMove(int col) {
     int free_pos;
-    for(free_pos = 70; test_board[free_pos + col] != "." && free_pos > -1; free_pos = free_pos - 10) {
+    for(free_pos = 70; board[free_pos + col] != "." && free_pos > -1; free_pos = free_pos - 10) {
         //cout << "Position " + to_string(free_pos + col) + " has: " + test_board[free_pos + col] + "\n"; 
     }
 
@@ -50,14 +50,10 @@ int Simba::checkMove(string test_board[80], int col) {
 
 }
 
-bool Simba::isWin(string test_board[80], int pos, string player) {
+string Simba::isWin(int pos) {
     string match_string;
-    if(player == "b") {
-        match_string = "bbgg|ggbb|bgbg|gbgb|bggb|gbbg";
-    } else{
-        match_string = "rrgg|ggrr|rgrg|grgr|rggr|grrg";
-    }
-    regex winner(match_string);
+    regex winner_b("bbgg|ggbb|bgbg|gbgb|bggb|gbbg");
+    regex winner_r("rrgg|ggrr|rgrg|grgr|rggr|grrg");
 
     string test_string;
     int far_left = 0;
@@ -77,11 +73,14 @@ bool Simba::isWin(string test_board[80], int pos, string player) {
     // check horizontal
     test_string = "";
     for(int i=pos-far_left; i <= pos+far_right; i++) {
-        test_string = test_string + test_board[i];
+        test_string = test_string + board[i];
     }
     //cout << test_string + "\n";
-    if(regex_search(test_string,winner)) {
-        return true;
+    if(regex_search(test_string,winner_b)) {
+        return "b";
+    }
+    if(regex_search(test_string,winner_r)) {
+        return "r";
     }
 
     // find how far up to go
@@ -92,11 +91,14 @@ bool Simba::isWin(string test_board[80], int pos, string player) {
     //check vertical
     test_string = "";
     for(int i=pos-(far_up*10); i <= pos+(far_down*10); i=i+10) {
-        test_string = test_string + test_board[i];
+        test_string = test_string + board[i];
     }
     //cout << test_string + "\n";
-    if(regex_search(test_string,winner)) {
-        return true;
+    if(regex_search(test_string,winner_b)) {
+        return "b";
+    }
+    if(regex_search(test_string,winner_r)) {
+        return "r";
     }
 
     // find how far diag up backward
@@ -107,11 +109,14 @@ bool Simba::isWin(string test_board[80], int pos, string player) {
     //check diagonal foward
     test_string = "";
     for(int i=pos-(far_diag_ub*11); i <= pos+(far_diag_df*11); i=i+11) {
-        test_string = test_string + test_board[i];
+        test_string = test_string + board[i];
     }
     //cout << test_string + "\n";
-    if(regex_search(test_string,winner)) {
-        return true;
+    if(regex_search(test_string,winner_b)) {
+        return "b";
+    }
+    if(regex_search(test_string,winner_r)) {
+        return "r";
     }
 
     // find how far diag up forward
@@ -122,62 +127,63 @@ bool Simba::isWin(string test_board[80], int pos, string player) {
     //check diagonal foward
     test_string = "";
     for(int i=pos-(far_diag_uf*9); i <= pos+(far_diag_db*9); i=i+9) {
-        test_string = test_string + test_board[i];
+        test_string = test_string + board[i];
     }
     //cout << test_string + "\n";
-    if(regex_search(test_string,winner)) {
-        return true;
+    if(regex_search(test_string,winner_b)) {
+        return "b";
+    }
+    if(regex_search(test_string,winner_r)) {
+        return "r";
     }
 
     
 
-    return false;
+    return "";
 
 }
 
-int Simba::minMax(string game_board[80],int depth, string color, int pos, bool im_playing) {
+bool Simba::boardFull() {
+    for(int i=0; i<10; i++) {
+        if(board[i] != ".") {
+            return false;
+        }
+    }
+    return true;
+}
+
+int Simba::minMax(int depth, int pos, bool im_playing) {
 
     int move_value;
-    int temp = 0;
-    string color_to_play;
-    string test_board[80];
+    int temp;
 
     // if we are past our depth, return
-    if(depth <=0) {
-        return 0;
-    }
-    // play the move
-    copy(game_board, game_board + sizeof(game_board[80]), test_board);
-    test_board[pos] = color;
-
-    // check if we lost
-        if(Simba::isWin(test_board, pos, opp_color)) {
-            //cout << "losing move\n";
-            return -depth;
-        }
-
-    //check if we won
-        if(Simba::isWin(test_board, pos, player_color)) {
-            //cout << "winning move\n";
-            return depth;
-        }
+    if(depth <=0) return 0;
+    // Check for a winner
+    string winner = Simba::isWin(pos);
+    if(winner == player_color) return depth;
+    if(winner == opp_color) return -depth;
+    if(boardFull()) return 0;
+    
         
     
     move_value = im_playing?-1:1;
 
     for( int col=0; col < 10; col++) {
-        pos = Simba::checkMove(test_board, col);
+        pos = Simba::checkMove(col);
         if(pos > -1) {
-            // play the move
-            color_to_play = im_playing? player_color: opp_color;
 
             // play the players color
-            temp = Simba::minMax(test_board, depth-1, color_to_play, pos, !im_playing);
+            board[pos] = im_playing? player_color: opp_color;
+            temp = Simba::minMax(depth-1, pos, !im_playing);
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
 
             // play the neutral color
-            temp = Simba::minMax(test_board, depth-1, "g", pos, !im_playing);
+            board[pos] = "g";
+            temp = Simba::minMax(depth-1, pos, !im_playing);
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
+
+            board[pos] = ".";
             
         }
     }
