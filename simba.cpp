@@ -173,18 +173,12 @@ int Simba::minMax(string game_board[80],int depth, string color, int pos, bool i
 
             // play the players color
             temp = Simba::minMax(test_board, depth-1, color_to_play, pos, !im_playing);
-            if(temp > move_value) {
-                //cout << "New best move found! " << to_string(col+1) << " has value: " << to_string(temp) << "\n";
-                move_value = temp;
-            }
-            
+            move_value = im_playing? max(temp,move_value) : min(temp, move_value);
 
             // play the neutral color
             temp = Simba::minMax(test_board, depth-1, "g", pos, !im_playing);
-            if(temp > move_value) {
-                //cout << "New best move found! " << to_string(col+1) << " has value: " << to_string(temp) << "\n";
-                move_value = temp;
-            }
+            move_value = im_playing? max(temp,move_value) : min(temp, move_value);
+            
         }
     }
 

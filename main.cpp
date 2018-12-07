@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
     int pos;
     int move_value = -1;
     int temp;
-    int depth = 3;
+    int depth = 4;
 
     string color_to_play;
     int col_to_play;

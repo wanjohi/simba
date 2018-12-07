@@ -6,6 +6,7 @@
 #include <regex>
 #include <thread>
 #include <future>
+#include <algorithm> 
 
 using namespace std;
 
