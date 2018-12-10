@@ -160,7 +160,7 @@ bool Simba::boardFull() {
     return true;
 }
 
-int Simba::minMax(int depth, int pos, bool im_playing) {
+int Simba::minMax(int depth, int pos, bool im_playing, int alpha, int beta) {
 
     int move_value;
     int temp;
@@ -183,13 +183,27 @@ int Simba::minMax(int depth, int pos, bool im_playing) {
 
             // play the players color
             board[pos] = im_playing? player_color: opp_color;
-            temp = Simba::minMax(depth-1, pos, !im_playing);
+            temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
+            alpha = im_playing? max(temp,alpha) : alpha;
+            beta = !im_playing? min(temp,beta) : beta;
+
+            if(beta <= alpha) {
+                cout << "pruning: " + to_string(beta) + " | " + to_string(alpha) + "\n";
+                continue;
+            }
 
             // play the neutral color
             board[pos] = "g";
-            temp = Simba::minMax(depth-1, pos, !im_playing);
+            temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
+            alpha = im_playing? max(temp,alpha) : alpha;
+            beta = !im_playing? min(temp,beta) : beta;
+
+            if(beta <= alpha) {
+                cout << "pruning: " + to_string(beta) + " | " + to_string(alpha) + "\n";
+                continue;
+            }
 
             board[pos] = ".";
             

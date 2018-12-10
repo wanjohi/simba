@@ -31,6 +31,6 @@ class Simba
     void play();
     bool boardFull();
     string isWin(int pos);
-    int minMax(int depth, int pos, bool im_playing);
+    int minMax(int depth, int pos, bool im_playing, int alpha, int beta);
 };
 #endif
