@@ -26,40 +26,30 @@ int main(int argc, char **argv) {
         if(pos > -1) {
             new_simba1.board[pos] = new_simba1.player_color;
             int val1 = new_simba1.minMax(depth, pos, false);
-            // play the players color
-            //auto f2 = async(&Simba::minMax, new_simba, new_simba.board, depth, "g", pos, false);
+
             new_simba2.board[pos] = "g";
-            //auto f1 = async(&Simba::minMax, new_simba2, depth, pos, false);
             int val2 = new_simba2.minMax(depth, pos, false);
 
-            //f1.wait();
-            //f2.wait();
-            //int val1 = f1.get();
-            //int val2 = f1.get();
-            //cout <<"val 1: " +to_string(val1) + "\n";
-            //cout <<"val 2: " +to_string(val2) + "\n";
-
             // randomizer
-            if(val1 == move_value && val2 == move_value && rand()%2 ){
+            if(val1 == move_value && val2 == move_value && rand()%2 ) {
                 cout << "Randomizing move! " << to_string(col+1) << " has value: " << to_string(val1) << "\n";
                 move_value = val1;
                 color_to_play = rand()%2? new_simba1.player_color : "g";
                 col_to_play = col +1;
-                continue;
-            }
+            } else {
+                if(val1 > move_value) {
+                    cout << "New best move found! " << to_string(col+1) << " has value: " << to_string(val1) << "\n";
+                    move_value = val1;
+                    color_to_play = new_simba1.player_color;
+                    col_to_play = col +1;
+                }
 
-            if(val1 > move_value) {
-                cout << "New best move found! " << to_string(col+1) << " has value: " << to_string(val1) << "\n";
-                move_value = val1;
-                color_to_play = new_simba1.player_color;
-                col_to_play = col +1;
-            }
-
-            if(val2 > move_value) {
-                cout << "New best move found! " << to_string(col+1) << " has value: " << to_string(val2) << "\n";
-                move_value = val2;
-                color_to_play = "g";
-                col_to_play = col + 1;
+                if(val2 > move_value) {
+                    cout << "New best move found! " << to_string(col+1) << " has value: " << to_string(val2) << "\n";
+                    move_value = val2;
+                    color_to_play = "g";
+                    col_to_play = col + 1;
+                }
             }
 
             new_simba1.board[pos] = ".";

@@ -77,9 +77,11 @@ string Simba::isWin(int pos) {
     }
     //cout << test_string + "\n";
     if(regex_search(test_string,winner_b)) {
+        //cout << "win b: " + test_string + "\n";
         return "b";
     }
     if(regex_search(test_string,winner_r)) {
+        //cout << "win r: " + test_string + "\n";
         return "r";
     }
 
@@ -95,9 +97,11 @@ string Simba::isWin(int pos) {
     }
     //cout << test_string + "\n";
     if(regex_search(test_string,winner_b)) {
+        //cout << "win b: " + test_string + "\n";
         return "b";
     }
     if(regex_search(test_string,winner_r)) {
+        //cout << "win r: " + test_string + "\n";
         return "r";
     }
 
@@ -113,9 +117,11 @@ string Simba::isWin(int pos) {
     }
     //cout << test_string + "\n";
     if(regex_search(test_string,winner_b)) {
+       // cout << "win b: " + test_string + "\n";
         return "b";
     }
     if(regex_search(test_string,winner_r)) {
+        //cout << "win r: " + test_string + "\n";
         return "r";
     }
 
@@ -131,9 +137,11 @@ string Simba::isWin(int pos) {
     }
     //cout << test_string + "\n";
     if(regex_search(test_string,winner_b)) {
+        //cout << "win b: " + test_string + "\n";
         return "b";
     }
     if(regex_search(test_string,winner_r)) {
+        //cout << "win r: " + test_string + "\n";
         return "r";
     }
 
