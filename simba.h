@@ -8,7 +8,7 @@
 #include <future>
 #include <algorithm> 
 #include <random>
-#include <time.h>
+#include <functional>
 
 using namespace std;
 

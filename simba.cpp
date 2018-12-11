@@ -36,7 +36,7 @@ string Simba::getPlayer() {
 // Play move
 int Simba::checkMove(int col) {
     int free_pos;
-    for(free_pos = 70; board[free_pos + col] != "." && free_pos > -1; free_pos = free_pos - 10) {
+    for(free_pos = 70; free_pos > -1 && board[free_pos + col] != "."; free_pos = free_pos - 10) {
         //cout << "Position " + to_string(free_pos + col) + " has: " + test_board[free_pos + col] + "\n"; 
     }
 
@@ -181,7 +181,7 @@ int Simba::minMax(int depth, int pos, bool im_playing, int alpha, int beta) {
 
     for( int col=0; col < 10; col++) {
         pos = Simba::checkMove(col);
-        //cout << "pos: " + to_string(pos) + "\n";
+        //cout << "col: " + to_string(col) + "\n";
         if(pos > -1) {
 
             // play the players color

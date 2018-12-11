@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
     string color_to_play;
     int col_to_play;
     //srand(time(NULL));
-    auto gen = std::bind(std::uniform_int_distribution<>(0,1),std::default_random_engine());
+    auto gen = bind(std::uniform_int_distribution<>(0,1),default_random_engine());
 
     for(int col =0; col < 10; col++) {
         pos = new_simba1.checkMove(col);
@@ -27,11 +27,12 @@ int main(int argc, char **argv) {
         if(pos > -1) {
             new_simba1.board[pos] = new_simba1.player_color;
             int val1 = new_simba1.minMax(depth, pos, false,-1000,1000);
+            //cout << "val1 " + to_string(val1) + "\n";
 
             new_simba2.board[pos] = "g";
             int val2 = new_simba2.minMax(depth, pos, false,-1000,1000);
 
-            //cout << "val1 " + to_string(val1) + "\n";
+            
             //cout << "val2 " + to_string(val2) + "\n";
 
             // randomizer
