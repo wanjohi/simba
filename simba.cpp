@@ -66,13 +66,14 @@ string Simba::isWin(int pos) {
     int far_diag_db = 0;
 
     // find how far left to go
-    for(int i=0; (pos%10)-i>=0 && i<4; i++) far_left = i;
+    //for(int i=0; (pos%10)-i>=0 && i<4; i++) far_left = i;
     // find how far right to go
-    for(int i=0; (pos%10)+i<=9 && i<4; i++) far_right = i;
+    //for(int i=0; (pos%10)+i<=9 && i<4; i++) far_right = i;
 
     // check horizontal
+    far_left = (pos/10)*10;
     test_string = "";
-    for(int i=pos-far_left; i <= pos+far_right; i++) {
+    for(int i=far_left; i <= far_left+9; i++) {
         test_string = test_string + board[i];
     }
     //cout << test_string + "\n";
@@ -86,13 +87,14 @@ string Simba::isWin(int pos) {
     }
 
     // find how far up to go
-    for(int i=0; i<4 && pos - (i*10) >= 0; i++) far_up = i;
+    //for(int i=0; i<4 && pos - (i*10) >= 0; i++) far_up = i;
     // find how far down to go
-    for(int i=0; i<4 && pos + (i*10) < 80; i++) far_down = i;
+    //for(int i=0; i<4 && pos + (i*10) < 80; i++) far_down = i;
+    far_up = pos % 10;
 
     //check vertical
     test_string = "";
-    for(int i=pos-(far_up*10); i <= pos+(far_down*10); i=i+10) {
+    for(int i=far_up; i <= far_up + 70; i=i+10) {
         test_string = test_string + board[i];
     }
     //cout << test_string + "\n";
@@ -179,7 +181,7 @@ int Simba::minMax(int depth, int pos, bool im_playing, int alpha, int beta) {
     
     move_value = im_playing?-10:10;
 
-    for( int col=0; col < 10; col++) {
+    for( int col=5; col < 10; col++) {
         pos = Simba::checkMove(col);
         //cout << "col: " + to_string(col) + "\n";
         if(pos > -1) {
@@ -205,7 +207,41 @@ int Simba::minMax(int depth, int pos, bool im_playing, int alpha, int beta) {
             if(beta <= alpha) {
                 //cout << "pruning: " + to_string(beta) + " | " + to_string(alpha) + "\n";
                 board[pos] = ".";
-                break;
+                return move_value;
+            }
+
+            board[pos] = ".";
+            
+        }
+    }
+
+    for( int col=4; col > 0; col--) {
+        pos = Simba::checkMove(col);
+        //cout << "col: " + to_string(col) + "\n";
+        if(pos > -1) {
+
+            // play the players color
+            board[pos] = im_playing? player_color: opp_color;
+            temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+            move_value = im_playing? max(temp,move_value) : min(temp, move_value);
+            im_playing? alpha = max(temp,alpha) : beta = min(temp,beta) ;
+
+            // if(beta <= alpha) {
+            //     //cout << "pruning: " + to_string(beta) + " | " + to_string(alpha) + "\n";
+            //     board[pos] = ".";
+            //     break;
+            // }
+
+            // play the neutral color
+            board[pos] = "g";
+            temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+            move_value = im_playing? max(temp,move_value) : min(temp, move_value);
+            im_playing? alpha = max(temp,alpha) : beta = min(temp,beta) ;
+
+            if(beta <= alpha) {
+                //cout << "pruning: " + to_string(beta) + " | " + to_string(alpha) + "\n";
+                board[pos] = ".";
+                return move_value;
             }
 
             board[pos] = ".";
