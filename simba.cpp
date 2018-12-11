@@ -77,7 +77,7 @@ string Simba::isWin(int pos) {
     }
     //cout << test_string + "\n";
     if(regex_search(test_string,winner_b)) {
-        //cout << "win b: " + test_string + "\n";
+       // cout << "win b: " + test_string + "\n";
         return "b";
     }
     if(regex_search(test_string,winner_r)) {
@@ -137,7 +137,7 @@ string Simba::isWin(int pos) {
     }
     //cout << test_string + "\n";
     if(regex_search(test_string,winner_b)) {
-        //cout << "win b: " + test_string + "\n";
+       // cout << "win b: " + test_string + "\n";
         return "b";
     }
     if(regex_search(test_string,winner_r)) {
@@ -153,10 +153,11 @@ string Simba::isWin(int pos) {
 
 bool Simba::boardFull() {
     for(int i=0; i<10; i++) {
-        if(board[i] != ".") {
+        if(board[i] == ".") {
             return false;
         }
     }
+    //cout << "board is full \n";
     return true;
 }
 
@@ -172,37 +173,39 @@ int Simba::minMax(int depth, int pos, bool im_playing, int alpha, int beta) {
     if(winner == player_color) return depth;
     if(winner == opp_color) return -depth;
     if(boardFull()) return 0;
+    //cout << "at depth: " + to_string(depth) + "\n";
     
         
     
-    move_value = im_playing?-1:1;
+    move_value = im_playing?-10:10;
 
     for( int col=0; col < 10; col++) {
         pos = Simba::checkMove(col);
+        //cout << "pos: " + to_string(pos) + "\n";
         if(pos > -1) {
 
             // play the players color
             board[pos] = im_playing? player_color: opp_color;
             temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
-            alpha = im_playing? max(temp,alpha) : alpha;
-            beta = !im_playing? min(temp,beta) : beta;
+            im_playing? alpha = max(temp,alpha) : beta = min(temp,beta) ;
 
-            if(beta <= alpha) {
-                cout << "pruning: " + to_string(beta) + " | " + to_string(alpha) + "\n";
-                continue;
-            }
+            // if(beta <= alpha) {
+            //     //cout << "pruning: " + to_string(beta) + " | " + to_string(alpha) + "\n";
+            //     board[pos] = ".";
+            //     break;
+            // }
 
             // play the neutral color
             board[pos] = "g";
             temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
-            alpha = im_playing? max(temp,alpha) : alpha;
-            beta = !im_playing? min(temp,beta) : beta;
+            im_playing? alpha = max(temp,alpha) : beta = min(temp,beta) ;
 
             if(beta <= alpha) {
-                cout << "pruning: " + to_string(beta) + " | " + to_string(alpha) + "\n";
-                continue;
+                //cout << "pruning: " + to_string(beta) + " | " + to_string(alpha) + "\n";
+                board[pos] = ".";
+                break;
             }
 
             board[pos] = ".";

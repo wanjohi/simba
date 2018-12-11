@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
     int pos;
     int move_value = -10;
     int temp;
-    int depth = 10;
+    int depth = 4;
     string color_to_play;
     int col_to_play;
     //srand(time(NULL));
@@ -31,8 +31,11 @@ int main(int argc, char **argv) {
             new_simba2.board[pos] = "g";
             int val2 = new_simba2.minMax(depth, pos, false,-1000,1000);
 
+            //cout << "val1 " + to_string(val1) + "\n";
+            //cout << "val2 " + to_string(val2) + "\n";
+
             // randomizer
-            if(val1 == move_value && val2 == move_value && gen() && gen() && gen()) {
+            if(val1 == move_value && val2 == move_value && gen()) {
                 cout << "Randomizing move! " << to_string(col+1) << " has value: " << to_string(val1) << "\n";
                 move_value = val1;
                 color_to_play = new_simba1.player_color;
