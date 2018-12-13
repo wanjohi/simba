@@ -9,6 +9,7 @@
 #include <algorithm> 
 #include <random>
 #include <functional>
+#include <unordered_map>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ class Simba
     char opp_color;
     char player_color;
     array<char, 80> board;
+    unordered_map<string, int> trans_table;
     void setBoard(string input);
     void setPlayer(string input);
     void printBoard();

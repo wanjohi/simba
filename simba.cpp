@@ -164,6 +164,7 @@ int Simba::minMax(int depth, int pos, bool im_playing, int alpha, int beta) {
 
     int move_value;
     int temp;
+    string temp_string;
 
     // if we are past our depth, return
     if(depth <=0) return 0;
@@ -187,13 +188,29 @@ int Simba::minMax(int depth, int pos, bool im_playing, int alpha, int beta) {
 
             // play the players color
             board[pos] = im_playing? player_color: opp_color;
-            temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+            
+            if (trans_table.find(board.data()) != trans_table.end()) {
+                temp = trans_table[board.data()];
+            } else {
+                temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+                // add the trans table
+                trans_table.emplace(board.data(), temp);
+            }
+
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
             im_playing? alpha = max(temp,alpha) : beta = min(temp,beta) ;
 
             // play the neutral color
             board[pos] = 'g';
-            temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+
+            if (trans_table.find(board.data()) != trans_table.end()) {
+                temp = trans_table[board.data()];
+            } else {
+                temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+                // add the trans table
+                trans_table.emplace(board.data(), temp);
+            }
+
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
             im_playing? alpha = max(temp,alpha) : beta = min(temp,beta) ;
 
@@ -214,13 +231,29 @@ int Simba::minMax(int depth, int pos, bool im_playing, int alpha, int beta) {
 
             // play the players color
             board[pos] = im_playing? player_color: opp_color;
-            temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+
+            if (trans_table.find(board.data()) != trans_table.end()) {
+                temp = trans_table[board.data()];
+            } else {
+                temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+                // add the trans table
+                trans_table.emplace(board.data(), temp);
+            }
+
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
             im_playing? alpha = max(temp,alpha) : beta = min(temp,beta) ;
 
             // play the neutral color
             board[pos] = 'g';
-            temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+
+            if (trans_table.find(board.data()) != trans_table.end()) {
+                temp = trans_table[board.data()];
+            } else {
+                temp = Simba::minMax(depth-1, pos, !im_playing, alpha, beta);
+                // add the trans table
+                trans_table.emplace(board.data(), temp);
+            }
+            
             move_value = im_playing? max(temp,move_value) : min(temp, move_value);
             im_playing? alpha = max(temp,alpha) : beta = min(temp,beta) ;
 

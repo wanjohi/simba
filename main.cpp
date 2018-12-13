@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
     int pos;
     int move_value = -10;
     int temp;
-    int depth = 3;
+    int depth = 5;
     int alpha = -1000;
     int beta = 1000;
     string color_to_play;
