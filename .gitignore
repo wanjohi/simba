@@ -32,3 +32,5 @@
 *.app
 
 .vscode/
+simba
+simba_ai
