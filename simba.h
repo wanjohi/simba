@@ -1,7 +1,7 @@
 #ifndef Simba_H
 #define Simba_H
 #include <string>
-#include <sstream>
+#include <array>
 #include <iostream>
 #include <regex>
 #include <thread>
@@ -20,17 +20,17 @@ class Simba
     string best_color;
 
     public:
-    string opp_color;
-    string player_color;
-    string board[80];
+    char opp_color;
+    char player_color;
+    array<char, 80> board;
     void setBoard(string input);
     void setPlayer(string input);
     void printBoard();
-    string getPlayer();
+    char getPlayer();
     int checkMove(int col);
     void play();
     bool boardFull();
-    string isWin(int pos);
+    char isWin(int pos);
     int minMax(int depth, int pos, bool im_playing, int alpha, int beta);
 };
 #endif
